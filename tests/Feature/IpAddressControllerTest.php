@@ -130,8 +130,8 @@ class IpAddressControllerTest extends TestCase
         $response->assertJson( fn (AssertableJson $json) =>
             $json->has('data', fn (AssertableJson $json) =>
                 $json->has('id')
-                     ->has('ip_address')
-                     ->has('label')
+                     ->where('ip_address', $ipAddress)
+                     ->where('label', $label)
                      ->has('created_by')
                      ->has('updated_by')
                      ->has('created_at')

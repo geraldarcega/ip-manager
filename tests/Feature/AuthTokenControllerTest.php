@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -115,5 +116,20 @@ class AuthTokenControllerTest extends TestCase
 
         $response->assertStatus(204);
         $this->assertTrue($testUser->tokens()->count() === 0);
+    }
+
+    public function test_user_details() : void
+    {
+        $testUser = User::factory()->create();
+        Sanctum::actingAs($testUser);
+
+        $response = $this->getJson('/api/user');
+
+        $response->assertStatus(200);
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->where('id', $testUser->id)
+                ->where('email', $testUser->email)
+                ->where('name', $testUser->name)
+        );
     }
 }
