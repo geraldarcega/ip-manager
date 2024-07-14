@@ -1,8 +1,13 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthTokenController;
 use App\Http\Controllers\IpAddressController;
-use Illuminate\Support\Facades\Route;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
 Route::post('/login', [AuthTokenController::class, 'login']);
 
@@ -12,4 +17,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [IpAddressController::class, 'store']);
         Route::patch('/{ipAddress}', [IpAddressController::class, 'update']);
     });
+
+    Route::post('/logout', [AuthTokenController::class, 'logout']);
 });

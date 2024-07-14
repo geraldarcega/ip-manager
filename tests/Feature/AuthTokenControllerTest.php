@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class AuthTokenControllerTest extends TestCase
@@ -103,5 +104,16 @@ class AuthTokenControllerTest extends TestCase
                 'email' => 'The email field must be a valid email address.',
             ]
         ];
+    }
+
+    public function test_logout() : void
+    {
+        $testUser = User::factory()->create();
+        Sanctum::actingAs($testUser);
+
+        $response = $this->postJson('/api/logout');
+
+        $response->assertStatus(204);
+        $this->assertTrue($testUser->tokens()->count() === 0);
     }
 }
