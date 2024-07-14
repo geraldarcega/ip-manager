@@ -80,4 +80,5 @@ return [
         'validate_csrf_token' => Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
     ],
 
+    'token_name' => env('TOKEN_NAME', 'ip-manager-token'),
 ];
