@@ -225,4 +225,25 @@ class IpAddressControllerTest extends TestCase
             null
         ];
     }
+
+    /**
+     * A basic test for showing IP address by ID
+     */
+    public function test_show_ip_addresses_by_id(): void
+    {
+        // setup
+        $testData = $this->setupAccessAndData(1);
+
+        // send request
+        $response = $this->getJson(self::API_URI . '/' . $testData[0]->id);
+
+        // validate HTTP response status
+        $response->assertStatus(200);
+        // validate HTTP response body
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->where('id', $testData[0]->id)
+                ->where('ip_address', $testData[0]->ip_address)
+                ->where('label', $testData[0]->label)
+        );
+    }
 }
