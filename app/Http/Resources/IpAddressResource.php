@@ -19,8 +19,8 @@ class IpAddressResource extends JsonResource
             'id' => $this->id,
             'ip_address' => $this->ip_address,
             'label' => $this->label,
-            'created_by' => $this->creator->name,
-            'updated_by' => is_null($this->updated_by) ? null : $this->updator->name,
+            'created_by' => $this->creator?->name,
+            'updated_by' => is_null($this->updated_by) ? null : $this->updator?->name,
             'created_at' => Carbon::parse($this->created_at)->format('M d, Y h:i A'),
             'updated_at' => Carbon::parse($this->updated_at)->format('M d, Y h:i A'),
         ];
